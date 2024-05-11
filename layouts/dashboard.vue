@@ -5,17 +5,8 @@
       permanent
       color="#12A2C4"
     >
-      <v-sheet
-        color="grey lighten-4"
-        class="pa-4"
-      >
-        <v-avatar
-          class="mb-4"
-          color="grey darken-1"
-          size="64"
-        />
-
-        <div>john@vuetifyjs.com</div>
+      <v-sheet>
+        <v-img :src="require('@/assets/images/logo_dashboard.svg')" />
       </v-sheet>
 
       <v-divider />

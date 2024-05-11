@@ -1,30 +1,30 @@
 <template>
   <div>
-    <v-card rounded color="#EC9143">
-      <v-card-title>
-        <v-row class="rowCard fontTitle" justify="center">
+    <v-card rounded style="background-color: rgba(236, 145, 67, 0.5); margin-left: 10%; margin-right: 10%; height: 80vh">
+      <v-card-title style="padding-top: 5%;">
+        <v-row class="rowCard fontTitle" justify="start" style="padding-left: 25%;">
           Welcome
         </v-row>
-        <v-row class="rowCard fontTitle" justify="center">
+        <v-row class="rowCard fontTitle" justify="end" style="padding-right: 25%">
           Back
         </v-row>
       </v-card-title>
       <v-card-text>
         <v-row class="pa-4">
-          <v-text-field v-model="email" rounded label="E-Mail" outlined />
+          <v-text-field v-model="email" style="margin-left: 20%; margin-right: 20%" rounded label="E-Mail" outlined />
         </v-row>
         <v-row class="pa-4">
-          <v-text-field v-model="password" rounded label="Password" outlined />
+          <v-text-field v-model="password" style="margin-left: 20%; margin-right: 20%" rounded label="Password" outlined />
         </v-row>
       </v-card-text>
       <v-card-actions>
         <v-col cols="12">
-          <v-row class="rowCard">
-            <v-btn block class="pa-2" color="#134700" @click="login">
+          <v-row class="rowCard" justify="center">
+            <v-btn class="pa-2" color="#134700" style="width: 50%;" @click="login">
               <span style="text-transform: none; color: white;">Log-In</span>
             </v-btn>
           </v-row>
-          <v-row class="rowCard">
+          <v-row class="rowCard" justify="center">
             <span>if you didn't have account?</span>
             <a @click="showDialog = true">Sign-Up</a>
           </v-row>
@@ -197,9 +197,8 @@ export default {
 
 <style scoped>
 .rowCard{
-  width:100%;
-  display: flex;
-  justify-content: center;
+  width: 100%;
+  margin: 0!important;
 }
 
 .fontTitle{
