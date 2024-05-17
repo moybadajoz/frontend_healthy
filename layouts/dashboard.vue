@@ -31,23 +31,27 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
-      <v-row justify="center" class="mt-3">
-        <v-avatar
-          color="#555"
-        >
-          <v-icon
-            color="#FFF"
-          >
-            mdi-account
-          </v-icon>
-        </v-avatar>
-      </v-row>
-      <v-row justify="center">
-        Nombre
-      </v-row>
-      <v-row justify="center" class="mt-7">
-        email@email.com
-      </v-row>
+      <template #append>
+        <div class="mb-6">
+          <v-row justify="center" class="mt-3">
+            <v-avatar
+              color="#555"
+            >
+              <v-icon
+                color="#FFF"
+              >
+                mdi-account
+              </v-icon>
+            </v-avatar>
+          </v-row>
+          <v-row justify="center">
+            {{ getUser}}
+          </v-row>
+          <v-row justify="center" class="mt-7">
+            {{ getUser }}
+          </v-row>
+        </div>
+      </template>
     </v-navigation-drawer>
 
     <v-main style="background-color: #FFF4EC;">
@@ -62,6 +66,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
 export default {
   data: () => ({
     drawer: null,
@@ -72,6 +77,10 @@ export default {
       ['mdi-bed-outline', 'Patients', '/patients'],
       ['mdi-cart-outline', 'Orders', '/orders']
     ]
-  })
+  }),
+  computed: {
+    ...mapState(['user']),
+    ...mapGetters(['getUser'])
+  }
 }
 </script>
