@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-card rounded style="background-color: rgba(236, 145, 67, 0.5); margin-left: 10%; margin-right: 10%; height: 80vh">
-      <v-card-title style="padding-top: 5%;">
+    <v-card rounded class="d-flex flex-column justify-center" style="background-color: rgba(236, 145, 67, 0.5); margin-left: 10%; margin-right: 10%; height: 80vh">
+      <v-card-title>
         <v-row class="rowCard fontTitle" justify="start" style="padding-left: 25%;">
           Welcome
         </v-row>
@@ -10,17 +10,36 @@
         </v-row>
       </v-card-title>
       <v-card-text>
-        <v-row class="pa-4">
-          <v-text-field v-model="email" style="margin-left: 20%; margin-right: 20%" rounded label="E-Mail" outlined />
+        <v-row style="margin-left: 22%; margin-right: 20%;">
+          <h2>E-Mail</h2>
         </v-row>
-        <v-row class="pa-4">
-          <v-text-field v-model="password" style="margin-left: 20%; margin-right: 20%" rounded label="Password" outlined />
+        <v-row class="pa-4 pt-1">
+          <v-text-field
+            v-model="email"
+            style="margin-left: 20%; margin-right: 20%;"
+            rounded
+            outlined
+            dense
+            hide-details
+          />
+        </v-row>
+        <v-row style="margin-left: 22%; margin-right: 20%;">
+          <h2>Password</h2>
+        </v-row>
+        <v-row class="pa-4 pt-1">
+          <v-text-field
+            v-model="password"
+            style="margin-left: 20%; margin-right: 20%;"
+            rounded
+            outlined
+            dense
+          />
         </v-row>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="mb-5">
         <v-col cols="12">
           <v-row class="rowCard" justify="center">
-            <v-btn class="pa-2" color="#134700" style="width: 50%;" @click="login">
+            <v-btn class="pa-2" color="#134700" style="width: 55%;" @click="login">
               <span style="text-transform: none; color: white;">Log-In</span>
             </v-btn>
           </v-row>
@@ -34,21 +53,52 @@
     <v-dialog
       v-model="showDialog"
       persistent
-      width="500"
+      width="auto"
       transition="dialog-bottom-transition"
     >
-      <v-card>
-        <v-card-title>
-          Agregar Usuario
+      <v-card color="#FFC198">
+        <v-card-title class="mb-7">
+          <h2>Registrar Usuario</h2>
         </v-card-title>
         <v-card-text>
           <v-row width="100%">
             <v-text-field
+              v-model="nombre"
+              class="px-2 mx-2"
+              label="Nombre"
+              placeholder="Escribe tu nombre"
+              dense
+              outlined
+              rounded
+            />
+            <v-text-field
+              v-model="apaterno"
+              class="px-2 mx-2"
+              label="Apellido Paterno"
+              placeholder="Escribe tu apellido paterno"
+              dense
+              rounded
+              outlined
+            />
+            <v-text-field
+              v-model="amaterno"
+              class="px-2 mx-2"
+              label="Apellido Materno"
+              placeholder="Escribe tu apellido materno"
+              dense
+              rounded
+              outlined
+            />
+          </v-row>
+          <v-row width="100%">
+            <v-text-field
               v-model="email"
-              class="px-2 mx-2 pt-2"
+              class="px-2 mx-2"
               label="Correo"
               placeholder="Escribe tu Correo"
               outlined
+              rounded
+              dense
             />
           </v-row>
           <v-row width="100%">
@@ -59,33 +109,8 @@
               placeholder="Escribe tu password"
               outlined
               type="password"
-            />
-          </v-row>
-          <v-row width="100%">
-            <v-text-field
-              v-model="nombre"
-              class="px-2 mx-2"
-              label="Nombre"
-              placeholder="Escribe tu nombre"
-              outlined
-            />
-          </v-row>
-          <v-row width="100%">
-            <v-text-field
-              v-model="apaterno"
-              class="px-2 mx-2"
-              label="Apellido Paterno"
-              placeholder="Escribe tu apellido paterno"
-              outlined
-            />
-          </v-row>
-          <v-row width="100%">
-            <v-text-field
-              v-model="amaterno"
-              class="px-2 mx-2"
-              label="Apellido Materno"
-              placeholder="Escribe tu apellido materno"
-              outlined
+              rounded
+              dense
             />
           </v-row>
           <v-row width="100%">
@@ -94,6 +119,8 @@
               class="px-2 mx-2"
               label="Direccion"
               placeholder="Escribe tu direccion"
+              dense
+              rounded
               outlined
             />
           </v-row>
@@ -103,6 +130,8 @@
               class="px-2 mx-2"
               label="Telefono"
               placeholder="Escribe tu telefono"
+              dense
+              rounded
               outlined
             />
           </v-row>
@@ -144,7 +173,9 @@ export default {
   },
   methods: {
     async login () {
-      await console.log('@@@ datos => ', this.email, this.password)
+      if (this.email === null || this.password === null) {
+        return
+      }
       const sendData = {
         email: this.email,
         password: this.password
@@ -154,7 +185,9 @@ export default {
       }).then(async (res) => {
         const result = await res.data
         if (result.message === 'success') {
+          console.log('@@@@@ result => ', result)
           this.$store.commit('setToken', result.token)
+          this.$store.commit('setUser', result.user)
           this.$router.push('/dashboard')
         }
       }).catch((err) => {

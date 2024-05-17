@@ -1,3 +1,5 @@
+import createPersistedState from 'vuex-persistedstate'
+
 export const state = () => ({
   user: null,
   token: null
@@ -11,3 +13,8 @@ export const mutations = {
     state.token = token
   }
 }
+
+export const getters = {
+  getUser: state => state.user
+}
+export const plugins = [createPersistedState()]
