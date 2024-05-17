@@ -45,10 +45,10 @@
             </v-avatar>
           </v-row>
           <v-row justify="center">
-            {{ getUser}}
+            {{ getUser.name }}
           </v-row>
           <v-row justify="center" class="mt-7">
-            {{ getUser }}
+            {{ getUser.email }}
           </v-row>
         </div>
       </template>
