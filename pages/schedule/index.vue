@@ -12,6 +12,7 @@
         class="ml-3"
         color="green darken-2"
         rounded
+        @click="showDialog=true"
       >
         New patient
       </v-btn>
@@ -48,6 +49,118 @@
         </v-slide-item>
       </v-slide-group>
     </v-row>
+    <v-dialog
+      v-model="showDialog"
+      persistent
+      width="auto"
+      transition="dialog-bottom-transition"
+    >
+      <v-card color="#FFC198">
+        <v-card-title class="mb-7">
+          <h2>Registrar Paciente</h2>
+        </v-card-title>
+        <v-card-text>
+          <v-row width="100%">
+            <v-text-field
+              v-model="nombre"
+              class="px-2 mx-2"
+              label="Nombre"
+              placeholder="Escribe tu nombre"
+              dense
+              outlined
+              rounded
+            />
+            <v-text-field
+              v-model="apaterno"
+              class="px-2 mx-2"
+              label="Apellido Paterno"
+              placeholder="Escribe tu apellido paterno"
+              dense
+              rounded
+              outlined
+            />
+            <v-text-field
+              v-model="amaterno"
+              class="px-2 mx-2"
+              label="Apellido Materno"
+              placeholder="Escribe tu apellido materno"
+              dense
+              rounded
+              outlined
+            />
+          </v-row>
+          <v-row width="100%">
+            <v-text-field
+              v-model="sexo"
+              label="Sexo"
+              placeholder="Escribe tu sexo"
+              class="px-2 mx-2"
+              dense
+              rounded
+              outlined
+            />
+            <v-text-field
+              v-model="edad"
+              label="Edad"
+              placeholder="Escribe tu edad"
+              class="px-2 mx-2"
+              dense
+              rounded
+              outlined
+            />
+          </v-row>
+          <v-row width="100%">
+            <v-text-field
+              v-model="email"
+              class="px-2 mx-2"
+              label="Correo"
+              placeholder="Escribe tu Correo"
+              outlined
+              rounded
+              dense
+            />
+          </v-row>
+          <v-row width="100%">
+            <v-text-field
+              v-model="direccion"
+              class="px-2 mx-2"
+              label="Direccion"
+              placeholder="Escribe tu direccion"
+              dense
+              rounded
+              outlined
+            />
+          </v-row>
+          <v-row width="100%">
+            <v-text-field
+              v-model="telefono"
+              class="px-2 mx-2"
+              label="Telefono"
+              placeholder="Escribe tu telefono"
+              dense
+              rounded
+              outlined
+            />
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-col cols="6">
+            <v-btn block color="green" @click="registerPatient">
+              <span style="text-transform: none; color: white;">
+                Registrar
+              </span>
+            </v-btn>
+          </v-col>
+          <v-col cols="6">
+            <v-btn block color="red" @click="showDialog=false">
+              <span style="text-transform: none; color: white;">
+                Cancelar
+              </span>
+            </v-btn>
+          </v-col>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -56,13 +169,50 @@
 export default {
   layout: 'dashboard',
   auth: true,
-  data: () => ({
-    selectedOption: 1,
-    options: [
-      ['Yesterday Schedule'],
-      ['Today Schedule'],
-      ['Tomorrow Schedule']
-    ]
-  })
+  data () {
+    return {
+      selectedOption: 1,
+      showDialog: false,
+      options: [
+        ['Yesterday Schedule'],
+        ['Today Schedule'],
+        ['Tomorrow Schedule']
+      ],
+      email: null,
+      nombre: null,
+      apaterno: null,
+      amaterno: null,
+      direccion: null,
+      telefono: null,
+      edad: null,
+      sexo: null
+    }
+  },
+  methods: {
+    registerPatient () {
+      const url = '/register_patient'
+      const data = {
+        email: this.email,
+        nombre: this.nombre,
+        apaterno: this.apaterno,
+        amaterno: this.amaterno,
+        direccion: this.direccion,
+        telefono: this.telefono,
+        edad: this.edad,
+        sexo: this.sexo,
+        userId: 'test'
+      }
+      this.$axios.post(url, data)
+        .then((res) => {
+          console.log('@@ res => ', res)
+          if (res.data.message === 'Patient registered successfully') {
+            this.showDialog = false
+          }
+        })
+        .catch((error) => {
+          console.log('@@ error => ', error)
+        })
+    }
+  }
 }
 </script>
