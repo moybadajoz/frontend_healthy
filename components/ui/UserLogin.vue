@@ -211,18 +211,18 @@ export default {
           if (res.data.message === 'User registered successfully') {
             this.showDialog = false
             this.obtenerUsuarios()
+            this.email = null
+            this.password = null
+            this.nombre = null
+            this.apaterno = null
+            this.amaterno = null
+            this.direccion = null
+            this.telefono = null
           }
         })
         .catch((error) => {
           console.log('@@ error => ', error)
         })
-      this.email = null
-      this.password = null
-      this.nombre = null
-      this.apaterno = null
-      this.amaterno = null
-      this.direccion = null
-      this.telefono = null
     }
   }
 }

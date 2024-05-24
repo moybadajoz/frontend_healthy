@@ -20,6 +20,7 @@
         class="ml-3"
         color="primary"
         rounded
+        @click="showAppointmentDialog=true"
       >
         New appointment
       </v-btn>
@@ -55,7 +56,7 @@
       width="auto"
       transition="dialog-bottom-transition"
     >
-      <v-card color="#FFC198">
+      <v-card color="#FFDEC8">
         <v-card-title class="mb-7">
           <h2>Registrar Paciente</h2>
         </v-card-title>
@@ -161,6 +162,116 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="showAppointmentDialog"
+      persistent
+      width="auto"
+      transition="dialog-bottom-transition"
+    >
+      <v-card color="#FFDEC8">
+        <v-card-title class="mb-7">
+          <h2>New appointment</h2>
+        </v-card-title>
+        <v-card-text>
+          <!-- paciente -->
+          <!-- hacer un picker o algo para seleccionar paciente -->
+          <!-- tal vez agregar un boton que mande a crear un nuevo paciente -->
+          <v-row>
+            <v-text-field
+              v-model="nombre"
+              class=""
+              label="Patient"
+              dense
+            />
+          </v-row>
+          <!-- fecha -->
+          <v-row>
+            <v-menu
+              v-model="dateMenu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template #activator="{ on, attrs }">
+                <v-text-field
+                  v-model="date"
+                  label="Date"
+                  prepend-inner-icon="mdi-calendar"
+                  v-bind="attrs"
+                  v-on="on"
+                />
+              </template>
+              <v-date-picker
+                v-model="date"
+                color="#FFC198"
+                @input="dateMenu = false"
+              />
+            </v-menu>
+          </v-row>
+          <!-- hora -->
+          <v-row>
+            <v-menu
+              ref="menu"
+              v-model="timeMenu"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="time"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template #activator="{ on, attrs }">
+                <v-text-field
+                  v-model="time"
+                  label="Time"
+                  prepend-inner-icon="mdi-clock-time-four-outline"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                />
+              </template>
+              <v-time-picker
+                v-if="timeMenu"
+                v-model="time"
+                full-width
+                format="24hr"
+                scrollable
+                color="#FFC198"
+                @click:minute="$refs.menu.save(time)"
+              />
+            </v-menu>
+          </v-row>
+          <!-- observaciones -->
+          <v-row>
+            <v-textarea
+              auto-grow
+              row-height="30"
+              rows="2"
+              label="Notes"
+            />
+          </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-col cols="6">
+            <v-btn block color="green" @click="bookingAppointment">
+              <span style="text-transform: none; color: white;">
+                Booking
+              </span>
+            </v-btn>
+          </v-col>
+          <v-col cols="6">
+            <v-btn block color="red" @click="showAppointmentDialog=false">
+              <span style="text-transform: none; color: white;">
+                Cancel
+              </span>
+            </v-btn>
+          </v-col>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -173,6 +284,11 @@ export default {
     return {
       selectedOption: 1,
       showDialog: false,
+      showAppointmentDialog: false,
+      dateMenu: false,
+      timeMenu: false,
+      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
+      time: null,
       options: [
         ['Yesterday Schedule'],
         ['Today Schedule'],
@@ -199,19 +315,29 @@ export default {
         direccion: this.direccion,
         telefono: this.telefono,
         edad: this.edad,
-        sexo: this.sexo,
-        userId: 'test'
+        sexo: this.sexo
       }
       this.$axios.post(url, data)
         .then((res) => {
           console.log('@@ res => ', res)
           if (res.data.message === 'Patient registered successfully') {
             this.showDialog = false
+            this.email = null
+            this.nombre = null
+            this.apaterno = null
+            this.amaterno = null
+            this.direccion = null
+            this.telefono = null
+            this.edad = null
+            this.sexo = null
           }
         })
         .catch((error) => {
           console.log('@@ error => ', error)
         })
+    },
+    bookingAppointment () {
+      console.log('@@ appointment => ', typeof (this.date), typeof (this.time))
     }
   }
 }
