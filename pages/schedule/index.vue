@@ -177,10 +177,16 @@
           <!-- hacer un picker o algo para seleccionar paciente -->
           <!-- tal vez agregar un boton que mande a crear un nuevo paciente -->
           <v-row>
-            <v-text-field
-              v-model="nombre"
-              class=""
+            <v-select
+              v-model="selectPatient"
               label="Patient"
+              :hint="`${selectPatient.email}`"
+              :items="selectItems"
+              item-text="name"
+              item-value="id"
+              persistent-hint
+              return-object
+              single-line
               dense
             />
           </v-row>
@@ -301,8 +307,13 @@ export default {
       direccion: null,
       telefono: null,
       edad: null,
-      sexo: null
+      sexo: null,
+      selectPatient: { name: null, email: '', id: null },
+      selectItems: []
     }
+  },
+  mounted () {
+    this.getPatients()
   },
   methods: {
     registerPatient () {
@@ -338,6 +349,27 @@ export default {
     },
     bookingAppointment () {
       console.log('@@ appointment => ', typeof (this.date), typeof (this.time))
+    },
+    getPatients () {
+      const url = '/getAllPatients'
+
+      this.$axios.get(url)
+        .then((res) => {
+          if (res.data.message === 'success') {
+            console.log(res.data.patients)
+            res.data.patients.forEach((patient) => {
+              this.selectItems.push({
+                name: `${patient.nombre} ${patient.apaterno} ${patient.amaterno}`,
+                email: patient.email,
+                id: patient.patientId
+              })
+            })
+            console.log(this.selectItems)
+          }
+        })
+        .catch((error) => {
+          console.log('@@ error => ', error)
+        })
     }
   }
 }
