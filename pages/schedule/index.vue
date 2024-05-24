@@ -253,6 +253,7 @@
           <!-- observaciones -->
           <v-row>
             <v-textarea
+              v-model="notes"
               auto-grow
               row-height="30"
               rows="2"
@@ -295,6 +296,7 @@ export default {
       timeMenu: false,
       date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
       time: null,
+      notes: null,
       options: [
         ['Yesterday Schedule'],
         ['Today Schedule'],
@@ -348,7 +350,23 @@ export default {
         })
     },
     bookingAppointment () {
-      console.log('@@ appointment => ', typeof (this.date), typeof (this.time))
+      console.log('@@ appointment => ', this.selectPatient, this.date, this.time, this.notes)
+      const url = '/bookingAppointment'
+
+      const sendData = {
+        date: this.date,
+        time: this.time,
+        notes: this.notes,
+        patientId: this.selectPatient.id
+      }
+
+      this.$axios.post(url, sendData)
+        .then((res) => {
+          console.log('@@ res => ', res)
+        })
+        .catch((error) => {
+          console.log('@@ error => ', error)
+        })
     },
     getPatients () {
       const url = '/getAllPatients'

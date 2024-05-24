@@ -31,6 +31,7 @@
             v-model="password"
             style="margin-left: 20%; margin-right: 20%;"
             rounded
+            type="password"
             outlined
             dense
           />
