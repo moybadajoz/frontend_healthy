@@ -30,6 +30,7 @@
         v-model="selectedOption"
         class="pa-4"
         mandatory
+        @change="getAppointments(selectedOption)"
       >
         <v-slide-item
           v-for="[text] in options"
@@ -50,6 +51,13 @@
         </v-slide-item>
       </v-slide-group>
     </v-row>
+    <v-col>
+      <appointment-card
+        v-for="item in appointments"
+        :key="item"
+        :appointment="item"
+      />
+    </v-col>
     <v-dialog
       v-model="showDialog"
       persistent
@@ -216,14 +224,14 @@
               />
             </v-menu>
           </v-row>
-          <!-- hora -->
+          <!-- hora inicio -->
           <v-row>
             <v-menu
               ref="menu"
               v-model="timeMenu"
               :close-on-content-click="false"
               :nudge-right="40"
-              :return-value.sync="time"
+              :return-value.sync="timeStart"
               transition="scale-transition"
               offset-y
               max-width="290px"
@@ -231,8 +239,8 @@
             >
               <template #activator="{ on, attrs }">
                 <v-text-field
-                  v-model="time"
-                  label="Time"
+                  v-model="timeStart"
+                  label="Time start"
                   prepend-inner-icon="mdi-clock-time-four-outline"
                   readonly
                   v-bind="attrs"
@@ -241,12 +249,46 @@
               </template>
               <v-time-picker
                 v-if="timeMenu"
-                v-model="time"
+                v-model="timeStart"
                 full-width
                 format="24hr"
                 scrollable
                 color="#FFC198"
-                @click:minute="$refs.menu.save(time)"
+                @click:minute="$refs.menu.save(timeStart)"
+              />
+            </v-menu>
+          </v-row>
+          <!-- hora fin -->
+          <v-row>
+            <v-menu
+              ref="menu2"
+              v-model="timeMenuEnd"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="timeEnd"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template #activator="{ on, attrs }">
+                <v-text-field
+                  v-model="timeEnd"
+                  label="Time end"
+                  prepend-inner-icon="mdi-clock-time-four-outline"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                />
+              </template>
+              <v-time-picker
+                v-if="timeMenuEnd"
+                v-model="timeEnd"
+                full-width
+                format="24hr"
+                scrollable
+                color="#FFC198"
+                @click:minute="$refs.menu2.save(timeEnd)"
               />
             </v-menu>
           </v-row>
@@ -294,9 +336,12 @@ export default {
       showAppointmentDialog: false,
       dateMenu: false,
       timeMenu: false,
-      date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
-      time: null,
-      notes: null,
+      timeMenuEnd: false,
+      // date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
+      data: null,
+      timeStart: null,
+      timeEnd: null,
+      notes: '',
       options: [
         ['Yesterday Schedule'],
         ['Today Schedule'],
@@ -311,11 +356,13 @@ export default {
       edad: null,
       sexo: null,
       selectPatient: { name: null, email: '', id: null },
-      selectItems: []
+      selectItems: [],
+      appointments: []
     }
   },
   mounted () {
     this.getPatients()
+    this.getAppointments(this.selectedOption)
   },
   methods: {
     registerPatient () {
@@ -332,9 +379,10 @@ export default {
       }
       this.$axios.post(url, data)
         .then((res) => {
-          console.log('@@ res => ', res)
+          // console.log('@@ res => ', res)
           if (res.data.message === 'Patient registered successfully') {
             this.showDialog = false
+            this.getPatients()
             this.email = null
             this.nombre = null
             this.apaterno = null
@@ -350,19 +398,24 @@ export default {
         })
     },
     bookingAppointment () {
-      console.log('@@ appointment => ', this.selectPatient, this.date, this.time, this.notes)
+      // console.log('@@ appointment => ', this.selectPatient, this.date, this.time, this.notes)
       const url = '/bookingAppointment'
 
       const sendData = {
-        date: this.date,
-        time: this.time,
+        dateTimeStart: new Date(`${this.date}T${this.timeStart}`),
+        dateTimeEnd: new Date(`${this.date}T${this.timeEnd}`),
         notes: this.notes,
         patientId: this.selectPatient.id
       }
+      // console.log('@@ sendData => ', sendData)
 
       this.$axios.post(url, sendData)
         .then((res) => {
-          console.log('@@ res => ', res)
+          // console.log('@@ res => ', res)
+          if (res.data.message === 'Successful') {
+            this.showAppointmentDialog = false
+          }
+          this.getAppointments(this.selectedOption)
         })
         .catch((error) => {
           console.log('@@ error => ', error)
@@ -374,7 +427,7 @@ export default {
       this.$axios.get(url)
         .then((res) => {
           if (res.data.message === 'success') {
-            console.log(res.data.patients)
+            // console.log(res.data.patients)
             res.data.patients.forEach((patient) => {
               this.selectItems.push({
                 name: `${patient.nombre} ${patient.apaterno} ${patient.amaterno}`,
@@ -382,8 +435,38 @@ export default {
                 id: patient.patientId
               })
             })
-            console.log(this.selectItems)
+            // console.log(this.selectItems)
           }
+        })
+        .catch((error) => {
+          console.log('@@ error => ', error)
+        })
+    },
+    getAppointments (selectedDay) {
+      const startOfDay = new Date()
+      const endOfDay = new Date()
+      startOfDay.setHours(0, 0, 0, 0)
+      endOfDay.setHours(23, 59, 59, 999)
+      switch (selectedDay) {
+        case 0:
+          startOfDay.setDate(startOfDay.getDate() - 1)
+          endOfDay.setDate(endOfDay.getDate() - 1)
+          break
+        case 1:
+          break
+        case 2:
+          startOfDay.setDate(startOfDay.getDate() + 1)
+          endOfDay.setDate(endOfDay.getDate() + 1)
+          break
+        default:
+          break
+      }
+      // console.log(`/getAppointments/${startOfDay.toISOString()}/${endOfDay}`)
+      const url = `/getAppointments/${startOfDay.toISOString()}/${endOfDay.toISOString()}`
+      this.$axios.get(url)
+        .then((res) => {
+          this.appointments = res.data.appointments
+          console.log(this.appointments)
         })
         .catch((error) => {
           console.log('@@ error => ', error)
