@@ -411,11 +411,11 @@ export default {
 
       this.$axios.post(url, sendData)
         .then((res) => {
-          // console.log('@@ res => ', res)
+          console.log('@@ res => ', res)
           if (res.data.message === 'Successful') {
             this.showAppointmentDialog = false
+            this.getAppointments(this.selectedOption)
           }
-          this.getAppointments(this.selectedOption)
         })
         .catch((error) => {
           console.log('@@ error => ', error)
