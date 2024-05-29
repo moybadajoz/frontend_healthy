@@ -58,6 +58,64 @@
           Notes: {{ appointment.notes }}
         </v-row>
       </v-col>
+      <v-col cols="1" align-self="center">
+        <v-row style="justify-content: center;">
+          State
+        </v-row>
+        <v-row style="justify-content: center;">
+          <!-- booking -->
+          <v-avatar
+            v-if="true"
+            class="mr-2"
+          >
+            <v-icon
+              color="#0000AF"
+            >
+              mdi-book-clock
+            </v-icon>
+          </v-avatar>
+          <!-- canceled -->
+          <v-avatar
+            v-else-if="false"
+            class="mr-2"
+          >
+            <v-icon
+              color="#FF0000"
+            >
+              mdi-book-cancel
+            </v-icon>
+          </v-avatar>
+          <!-- completed -->
+          <v-avatar
+            v-else
+            class="mr-2"
+          >
+            <v-icon
+              color="#00AF00"
+            >
+              mdi-book-check
+            </v-icon>
+          </v-avatar>
+        </v-row>
+      </v-col>
+      <v-col cols="auto" align-self="center">
+        <v-row>
+          <v-btn plain>
+            <v-icon color="#00F" class="mr-1">
+              mdi-calendar-month
+            </v-icon>
+            Reschedule
+          </v-btn>
+        </v-row>
+        <v-row>
+          <v-btn plain>
+            <v-icon color="#F00" class="mr-1">
+              mdi-cancel
+            </v-icon>
+            Cancel Booking
+          </v-btn>
+        </v-row>
+      </v-col>
     </v-row>
   </v-row>
 </template>
