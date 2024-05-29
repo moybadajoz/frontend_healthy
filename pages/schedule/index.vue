@@ -56,6 +56,7 @@
         v-for="item in appointments"
         :key="item"
         :appointment="item"
+        @reload-appts="getAppointments(selectedOption)"
       />
     </v-col>
     <v-dialog
@@ -345,7 +346,8 @@ export default {
       options: [
         ['Yesterday Schedule'],
         ['Today Schedule'],
-        ['Tomorrow Schedule']
+        ['Tomorrow Schedule'],
+        ['Month Schedule']
       ],
       email: null,
       nombre: null,
@@ -457,6 +459,9 @@ export default {
         case 2:
           startOfDay.setDate(startOfDay.getDate() + 1)
           endOfDay.setDate(endOfDay.getDate() + 1)
+          break
+        case 3:
+          endOfDay.setMonth(endOfDay.getMonth() + 1)
           break
         default:
           break
