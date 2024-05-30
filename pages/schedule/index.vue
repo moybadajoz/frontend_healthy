@@ -422,7 +422,7 @@ export default {
         })
     },
     getPatients () {
-      const url = '/getAllPatients'
+      const url = '/get-all-patients'
 
       this.$axios.get(url)
         .then((res) => {

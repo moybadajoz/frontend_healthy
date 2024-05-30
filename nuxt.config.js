@@ -1,3 +1,4 @@
+// import { component } from 'vue/types/umd'
 import colors from 'vuetify/es5/util/colors'
 
 export default {
