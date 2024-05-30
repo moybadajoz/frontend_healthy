@@ -70,6 +70,7 @@
           >
             <v-icon
               color="#0000AF"
+              x-large
             >
               mdi-book-clock
             </v-icon>
@@ -81,6 +82,7 @@
           >
             <v-icon
               color="#FF0000"
+              x-large
             >
               mdi-book-cancel
             </v-icon>
@@ -92,6 +94,7 @@
           >
             <v-icon
               color="#00AF00"
+              x-large
             >
               mdi-book-check
             </v-icon>
@@ -100,7 +103,10 @@
       </v-col>
       <v-col cols="auto" align-self="center">
         <v-row>
-          <v-btn plain>
+          <v-btn
+            plain
+            @click="showAppointmentDialog=true"
+          >
             <v-icon color="#00F" class="mr-1">
               mdi-calendar-month
             </v-icon>
@@ -161,12 +167,10 @@
     >
       <v-card color="#FFDEC8">
         <v-card-title class="mb-7">
-          <h2>New appointment</h2>
+          <h2>Reschedule appointment</h2>
         </v-card-title>
         <v-card-text>
           <!-- paciente -->
-          <!-- hacer un picker o algo para seleccionar paciente -->
-          <!-- tal vez agregar un boton que mande a crear un nuevo paciente -->
           <v-row>
             <v-select
               v-model="selectPatient"
@@ -179,6 +183,7 @@
               return-object
               single-line
               dense
+              disabled
             />
           </v-row>
           <!-- fecha -->
@@ -288,7 +293,7 @@
         </v-card-text>
         <v-card-actions>
           <v-col cols="6">
-            <v-btn block color="green" @click="bookingAppointment">
+            <v-btn block color="green" @click="rescheduleAppointment">
               <span style="text-transform: none; color: white;">
                 Booking
               </span>
@@ -328,8 +333,26 @@ export default {
   },
   data () {
     return {
-      cancelConfirm: false
+      cancelConfirm: false,
+      showAppointmentDialog: false,
+      selectPatient: { name: null, email: '', id: null },
+      selectItems: [],
+      dateMenu: false,
+      date: (new Date(this.appointment.dateTimeStart._seconds * 1000)).toLocaleDateString('en-CA'),
+      timeMenu: false,
+      timeStart: (new Date(this.appointment.dateTimeStart._seconds * 1000)).toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit' }),
+      timeMenuEnd: false,
+      timeEnd: (new Date(this.appointment.dateTimeEnd._seconds * 1000)).toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit' }),
+      notes: this.appointment.notes
     }
+  },
+  mounted () {
+    this.selectPatient = {
+      name: `${this.appointment.patient.nombre} ${this.appointment.patient.apaterno} ${this.appointment.patient.amaterno}`,
+      email: this.appointment.patient.email,
+      id: this.appointment.patientId
+    }
+    this.selectItems = [this.selectPatient]
   },
   methods: {
     cancelAppt (id) {
@@ -343,6 +366,29 @@ export default {
         })
         .catch((err) => {
           console.log(err)
+        })
+    },
+    rescheduleAppointment () {
+      const url = `/reschedule-appointment/${this.appointment.apptId}`
+
+      const sendData = {
+        dateTimeStart: new Date(`${this.date}T${this.timeStart}`),
+        dateTimeEnd: new Date(`${this.date}T${this.timeEnd}`),
+        notes: this.notes,
+        patientId: this.selectPatient.id
+      }
+      // console.log('@@ sendData => ', sendData)
+
+      this.$axios.put(url, sendData)
+        .then((res) => {
+          console.log('@@ res => ', res)
+          if (res.data.message === 'Successful') {
+            this.showAppointmentDialog = false
+            this.$emit('reload-appts')
+          }
+        })
+        .catch((error) => {
+          console.log('@@ error => ', error)
         })
     }
   }

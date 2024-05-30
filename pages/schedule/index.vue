@@ -183,8 +183,6 @@
         </v-card-title>
         <v-card-text>
           <!-- paciente -->
-          <!-- hacer un picker o algo para seleccionar paciente -->
-          <!-- tal vez agregar un boton que mande a crear un nuevo paciente -->
           <v-row>
             <v-select
               v-model="selectPatient"
@@ -339,7 +337,7 @@ export default {
       timeMenu: false,
       timeMenuEnd: false,
       // date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
-      data: null,
+      date: null,
       timeStart: null,
       timeEnd: null,
       notes: '',
