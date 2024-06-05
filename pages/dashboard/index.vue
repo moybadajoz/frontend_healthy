@@ -135,35 +135,234 @@
           </v-card>
         </v-col>
       </v-row>
-      <!-- <v-row>
+      <v-row>
         <v-col cols="3">
-          <h4>???</h4>
-          <v-card
-            color="#FFDEC8"
-            height="35vh"
-          >
-            daw
-          </v-card>
+          <h4 class="mb-3">
+            Medication
+          </h4>
+          <v-row class="mb-2">
+            <v-card
+              flat
+              width="100%"
+              height="11vh"
+              color="#FFC198"
+            >
+              <v-card-text class="mt-n2">
+                <v-row justify="space-between">
+                  <v-col cols="auto">
+                    <h2 class="mb-1">
+                      Fenofibrate (48mg)
+                    </h2>
+                    Take with food every morning
+                    <br>
+                    <span style="color: blue;">Last refil 21/01/2023</span>
+                  </v-col>
+                  <v-col cols="1" align-self="center">
+                    <v-row>
+                      <v-icon x-large>
+                        mdi-dots-vertical
+                      </v-icon>
+                    </v-row>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-row>
+          <v-row class="mb-2">
+            <v-card
+              flat
+              width="100%"
+              height="11vh"
+              color="#FFC198"
+            >
+              <v-card-text class="mt-n2">
+                <v-row justify="space-between">
+                  <v-col cols="auto">
+                    <h2 class="mb-1">
+                      Alfuzosin (10mg)
+                    </h2>
+                    Take 1 with food twice a day and avoid
+                    <br>
+                    Drinking alcohol for 2 hours after
+                    <br>
+                    <span style="color: blue;">Last refil 27/01/2023</span>
+                  </v-col>
+                  <v-col cols="1" align-self="center">
+                    <v-row>
+                      <v-icon x-large>
+                        mdi-dots-vertical
+                      </v-icon>
+                    </v-row>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-row>
+          <v-row>
+            <v-card
+              flat
+              width="100%"
+              height="11vh"
+              color="#FFC198"
+            >
+              <v-card-text class="mt-n2">
+                <v-row justify="space-between">
+                  <v-col cols="auto">
+                    <h2 class="mb-1">
+                      Dexamethasone (4mg)
+                    </h2>
+                    Take 3 tablets 3 times a day for 7 days
+                    <br>
+                    <span style="color: blue;">Last refil 24/01/2023</span>
+                  </v-col>
+                  <v-col cols="1" align-self="center">
+                    <v-row>
+                      <v-icon x-large>
+                        mdi-dots-vertical
+                      </v-icon>
+                    </v-row>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
+          </v-row>
         </v-col>
         <v-col cols="5">
-          <h4>Next appointments</h4>
+          <h4>Current Condition Of Patients</h4>
           <v-card
             color="#FFDEC8"
             height="35vh"
           >
-            daw
+            <v-card-title>
+              <div
+                style="border-radius: 20px;
+                 color:white;
+                 background-color: #EF9741;
+                 padding: 5px;
+                 "
+              >
+                Moderate
+              </div>
+            </v-card-title>
+            <v-card-subtitle class="mt-3">
+              <h2>Sinusitis</h2>
+            </v-card-subtitle>
+            <v-card-text>
+              <v-row>
+                <v-col cols="8">
+                  A condition in which the cavities around the nasal passages become inflamed
+                </v-col>
+                <v-col cols="4">
+                  <v-row>
+                    <h3>
+                      Next Appointment
+                    </h3>
+                  </v-row>
+                  <v-row>
+                    <v-btn
+                      plain
+                      class="px-0"
+                    >
+                      <v-icon color="#00F" class="mr-1">
+                        mdi-calendar-month
+                      </v-icon>
+                      <span style="text-transform: none;">
+                        Reschedule
+                      </span>
+                    </v-btn>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-card-actions>
+              <v-row>
+                <v-col>
+                  <h3>
+                    Primary Doctor
+                  </h3>
+                  <h5>
+                    Dr.Jenni
+                  </h5>
+                </v-col>
+                <v-col>
+                  <h3>
+                    Treatment
+                  </h3>
+                  <h5>
+                    Nasonex Aerosol
+                  </h5>
+                  <h5>
+                    Monotasone Furate 50mcg/Spray
+                  </h5>
+                </v-col>
+              </v-row>
+            </v-card-actions>
           </v-card>
         </v-col>
         <v-col cols="4">
-          <h4>Next appointments</h4>
+          <h4>Recents Bills</h4>
           <v-card
             color="#FFDEC8"
             height="35vh"
           >
-            daw
+            <v-card-text>
+              <v-row>
+                <v-col>
+                  <h3 class="mb-2">
+                    Your Payment
+                  </h3>
+                  <h1>
+                    $110.00
+                  </h1>
+                </v-col>
+                <v-col>
+                  <h3 class="mb-2">
+                    Medicare
+                  </h3>
+                  <h1 class="mb-2">
+                    $125.00
+                  </h1>
+                  <h3 class="mb-2">
+                    Total
+                  </h3>
+                  <h1 class="mb-2">
+                    $234.00
+                  </h1>
+                </v-col>
+              </v-row>
+              <v-row>
+                <h3 class="mb-2">
+                  Paid On The 27 April, 2020 To Dorian Med Pty Ltd
+                </h3>
+                <h3>
+                  <v-icon>
+                    mdi-map-marker-outline
+                  </v-icon>
+                  Suite 206/203-233 New King James Rd, Edgecliff NSW 2027
+                </h3>
+              </v-row>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                outlined
+                rounded
+                height="70px"
+                style="display: flex;"
+                class="ctm-btn"
+              >
+                <v-icon
+                  color="#00f"
+                >
+                  mdi-calendar-month
+                </v-icon>
+                <span style="text-transform: none;">
+                  Reschedule
+                </span>
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </v-col>
-      </v-row> -->
+      </v-row>
     </v-container>
     <v-dialog
       v-model="cancelConfirm"
@@ -460,3 +659,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.v-card {
+  border-radius: 20px;
+}
+
+</style>

@@ -116,6 +116,17 @@
         <v-row>
           <v-btn
             plain
+            @click="showGetApptDialog=true"
+          >
+            <v-icon color="warning" class="mr-1">
+              mdi-note-edit
+            </v-icon>
+            Complete appointment
+          </v-btn>
+        </v-row>
+        <v-row>
+          <v-btn
+            plain
             @click="cancelConfirm=true"
           >
             <v-icon color="#F00" class="mr-1">
@@ -309,6 +320,96 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="showGetApptDialog"
+      persistent
+      width="40%"
+      transition="dialog-bottom-transition"
+    >
+      <v-card color="#FFDEC8">
+        <v-card-title>
+          <h2>Appointment</h2>
+        </v-card-title>
+        <v-card-text>
+          <v-row justify="space-between">
+            <v-col cols="4">
+              <h3 class="mr-2">
+                Patient:
+              </h3>
+              <h4>
+                {{ appointment.patient.nombre }}
+                {{ appointment.patient.apaterno }}
+                {{ appointment.patient.amaterno }}
+              </h4>
+            </v-col>
+            <v-col cols="4">
+              <h3>Date:</h3>
+              <h4>
+                {{ (new Date(appointment.dateTimeStart._seconds * 1000)).toLocaleDateString('en-CA') }}
+                <v-spacer />
+                {{ (new Date(appointment.dateTimeStart._seconds * 1000)).toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit' }) }}
+              </h4>
+            </v-col>
+          </v-row>
+          <v-row
+            v-if="appointment.notes"
+          >
+            <v-col>
+              <h3>Notes:</h3>
+              <h4>
+                {{ appointment.notes }}
+              </h4>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-text-field
+              v-model="diagnosis"
+              label="Diagnosis"
+              hide-details
+              outlined
+              dense
+              class="mb-2"
+            />
+          </v-row>
+          <v-row>
+            <v-text-field
+              v-model="treatment"
+              label="Treatment"
+              hide-details
+              outlined
+              dense
+              class="mb-2"
+            />
+          </v-row>
+          <v-row>
+            <v-textarea
+              v-model="prescription"
+              label="Prescription"
+              auto-grow
+              hide-details
+              outlined
+              class="mb-2"
+            />
+          </v-row>
+        </v-card-text>
+        <v-card-actios>
+          <v-btn
+            color="green"
+            class="ma-3 mr-0 mt-0"
+            @click="completeAppt"
+          >
+            Save
+          </v-btn>
+          <v-btn
+            class="ma-3 mt-0"
+            color="red darken-4"
+            @click="showGetApptDialog=false"
+          >
+            Cancel
+          </v-btn>
+        </v-card-actios>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -335,6 +436,7 @@ export default {
     return {
       cancelConfirm: false,
       showAppointmentDialog: false,
+      showGetApptDialog: false,
       selectPatient: { name: null, email: '', id: null },
       selectItems: [],
       dateMenu: false,
@@ -390,6 +492,9 @@ export default {
         .catch((error) => {
           console.log('@@ error => ', error)
         })
+    },
+    completeAppt () {
+      console.log('asd')
     }
   }
 }
