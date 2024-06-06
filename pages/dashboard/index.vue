@@ -600,6 +600,7 @@ export default {
         })
         .catch((error) => {
           console.log('@@ error => ', error)
+          this.emitAlert('something went wrong')
         })
     },
     getAppointments () {
@@ -616,6 +617,7 @@ export default {
         })
         .catch((error) => {
           console.log('@@ error => ', error)
+          this.emitAlert('something went wrong')
         })
     },
     cancelAppt (id) {
@@ -630,6 +632,7 @@ export default {
         })
         .catch((err) => {
           console.log(err)
+          this.emitAlert('something went wrong')
         })
     },
     rescheduleAppointment () {
@@ -641,11 +644,8 @@ export default {
         notes: this.notes,
         patientId: this.selectPatient.id
       }
-      // console.log('@@ sendData => ', sendData)
-
       this.$axios.put(url, sendData)
         .then((res) => {
-          console.log('@@ res => ', res)
           if (res.data.message === 'Successful') {
             this.showAppointmentDialog = false
             this.getnxtAppt()
@@ -654,7 +654,18 @@ export default {
         })
         .catch((error) => {
           console.log('@@ error => ', error)
+          this.emitAlert('something went wrong')
         })
+    },
+    emitAlert (text) {
+      this.$nuxt.$emit('show-alert', {
+        color: 'red darken-4',
+        type: 'error',
+        text,
+        border: 'bottom',
+        width: 600,
+        time: 5000
+      })
     }
   }
 }

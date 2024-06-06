@@ -101,7 +101,11 @@
           </v-avatar>
         </v-row>
       </v-col>
-      <v-col cols="auto" align-self="center">
+      <v-col
+        v-if="appointment.state === 'Booking'"
+        cols="auto"
+        align-self="center"
+      >
         <v-row>
           <v-btn
             plain
@@ -128,6 +132,45 @@
           <v-btn
             plain
             @click="cancelConfirm=true"
+          >
+            <v-icon color="#F00" class="mr-1">
+              mdi-cancel
+            </v-icon>
+            Cancel Booking
+          </v-btn>
+        </v-row>
+      </v-col>
+      <v-col
+        v-else
+        cols="auto"
+        align-self="center"
+      >
+        <v-row>
+          <v-btn
+            plain
+            disabled
+          >
+            <v-icon color="#00F" class="mr-1">
+              mdi-calendar-month
+            </v-icon>
+            Reschedule
+          </v-btn>
+        </v-row>
+        <v-row>
+          <v-btn
+            plain
+            disabled
+          >
+            <v-icon color="warning" class="mr-1">
+              mdi-note-edit
+            </v-icon>
+            Complete appointment
+          </v-btn>
+        </v-row>
+        <v-row>
+          <v-btn
+            plain
+            disabled
           >
             <v-icon color="#F00" class="mr-1">
               mdi-cancel
@@ -363,16 +406,6 @@
           </v-row>
           <v-row>
             <v-text-field
-              v-model="diagnosis"
-              label="Diagnosis"
-              hide-details
-              outlined
-              dense
-              class="mb-2"
-            />
-          </v-row>
-          <v-row>
-            <v-text-field
               v-model="treatment"
               label="Treatment"
               hide-details
@@ -389,6 +422,27 @@
               hide-details
               outlined
               class="mb-2"
+            />
+          </v-row>
+          <v-row>
+            <v-textarea
+              v-model="comments"
+              label="Comments"
+              auto-grow
+              hide-details
+              outlined
+              class="mb-2"
+            />
+          </v-row>
+          <v-row>
+            <v-text-field
+              v-model="payment"
+              label="Payment"
+              hide-details
+              outlined
+              dense
+              class="mb-2"
+              type="number"
             />
           </v-row>
         </v-card-text>
@@ -455,6 +509,7 @@ export default {
       id: this.appointment.patientId
     }
     this.selectItems = [this.selectPatient]
+    // console.log(this.appointment)
   },
   methods: {
     cancelAppt (id) {
@@ -494,7 +549,24 @@ export default {
         })
     },
     completeAppt () {
-      console.log('asd')
+      const url = `/appointment-complete/${this.appointment.apptId}`
+      const data = {
+        comments: this.comments,
+        treatment: this.treatment,
+        prescription: this.prescription,
+        payment: this.payment === undefined ? 0 : this.payment
+      }
+
+      this.$axios.put(url, data)
+        .then((res) => {
+          if (res.data.message === 'success') {
+            this.showGetApptDialog = false
+            this.$emit('reload-appts')
+          }
+        })
+        .catch((err) => {
+          console.log('@@ error => ', err)
+        })
     }
   }
 }

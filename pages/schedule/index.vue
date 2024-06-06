@@ -394,6 +394,7 @@ export default {
           }
         })
         .catch((error) => {
+          this.emitAlert('something went wrong')
           console.log('@@ error => ', error)
         })
     },
@@ -418,6 +419,7 @@ export default {
           }
         })
         .catch((error) => {
+          this.emitAlert('something went wrong')
           console.log('@@ error => ', error)
         })
     },
@@ -439,6 +441,7 @@ export default {
           }
         })
         .catch((error) => {
+          this.emitAlert('something went wrong')
           console.log('@@ error => ', error)
         })
     },
@@ -469,11 +472,21 @@ export default {
       this.$axios.get(url)
         .then((res) => {
           this.appointments = res.data.appointments
-          console.log(this.appointments)
         })
         .catch((error) => {
           console.log('@@ error => ', error)
+          this.emitAlert('something went wrong')
         })
+    },
+    emitAlert (text) {
+      this.$nuxt.$emit('show-alert', {
+        color: 'red darken-4',
+        type: 'error',
+        text,
+        border: 'bottom',
+        width: 600,
+        time: 5000
+      })
     }
   }
 }

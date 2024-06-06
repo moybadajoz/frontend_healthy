@@ -150,10 +150,13 @@
       </v-slide-group>
     </v-row>
     <v-row>
+      <!-- prescription -->
       <v-container
         v-if="optionSelect == 0"
       >
         <v-card
+          v-for="item in appointments"
+          :key="item.apptId"
           min-height="15vh"
           color="#D9D9D9"
           style="border-radius: 20px;"
@@ -162,18 +165,20 @@
           <v-card-text style="font-weight: 600; font-size: medium">
             <v-row justify="space-between">
               <v-col cols="3">
-                Dr. Paul
+                Dr. {{ item.user.nombre }}
               </v-col>
               <v-col cols="3" style="display: flex; justify-content: flex-end;">
-                01/01/2023 12:30
+                {{ new Date(item.dateTimeStart._seconds*1000).toLocaleDateString() }}
+                {{ (new Date(item.dateTimeStart._seconds * 1000)).toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit' }) }}
               </v-col>
             </v-row>
             <v-row class="ml-1">
-              Codeino Linctus (G/5gal) x 400 Ml To Be Taken As Directed
+              {{ item.prescription }}
             </v-row>
           </v-card-text>
         </v-card>
       </v-container>
+      <!-- checkup -->
       <v-container
         v-else-if="optionSelect == 1"
       >
@@ -195,11 +200,12 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="item in desserts"
-                  :key="item.id"
+                  v-for="item in appointments"
+                  :key="item.apptId"
                 >
                   <td class="text-center">
-                    {{ item.date }}
+                    {{ new Date(item.dateTimeStart._seconds*1000).toLocaleDateString() }}
+                    {{ (new Date(item.dateTimeStart._seconds * 1000)).toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit' }) }}
                   </td>
                   <td class="text-center">
                     {{ item.treatment }}
@@ -235,11 +241,12 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="item in desserts"
-                  :key="item.id"
+                  v-for="item in appointments"
+                  :key="item.apptId"
                 >
                   <td class="text-center">
-                    {{ item.date }}
+                    {{ new Date(item.dateTimeStart._seconds*1000).toLocaleDateString() }}
+                    {{ (new Date(item.dateTimeStart._seconds * 1000)).toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit' }) }}
                   </td>
                   <td class="text-center">
                     {{ item.treatment }}
@@ -247,6 +254,7 @@
                   <td class="text-center">
                     <v-btn
                       icon
+                      @click="downloadPDF(item.apptId)"
                     >
                       <v-icon>
                         mdi-download
@@ -281,11 +289,12 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="item in desserts"
-                  :key="item.id"
+                  v-for="item in appointments"
+                  :key="item.apptId"
                 >
                   <td class="text-center">
-                    {{ item.date }}
+                    {{ new Date(item.dateTimeStart._seconds*1000).toLocaleDateString() }}
+                    {{ (new Date(item.dateTimeStart._seconds * 1000)).toLocaleTimeString([], { hour12: true, hour: '2-digit', minute: '2-digit' }) }}
                   </td>
                   <td class="text-center">
                     {{ item.treatment }}
@@ -382,7 +391,8 @@ export default {
         { text: 'Discount Amount', value: '$200' },
         { text: 'Deposit', value: '$1800' },
         { text: 'Balances', value: '$0' }
-      ]
+      ],
+      appointments: []
     }
   },
   computed: {
@@ -392,6 +402,7 @@ export default {
   },
   mounted () {
     this.getPatient()
+    this.getAppointments()
   },
   methods: {
     getPatient () {
@@ -404,8 +415,37 @@ export default {
           }
         })
         .catch((error) => {
+          this.emitAlert('something went wrong')
           console.log(error)
         })
+    },
+    getAppointments () {
+      const url = `/get-appointments-by-patient/${this.id}`
+
+      this.$axios.get(url)
+        .then((res) => {
+          if (res.data.message === 'success') {
+            this.appointments = res.data.appointments
+          }
+        })
+        .catch((err) => {
+          this.emitAlert('something went wrong')
+          console.log(err)
+        })
+    },
+    emitAlert (text) {
+      this.$nuxt.$emit('show-alert', {
+        color: 'red darken-4',
+        type: 'error',
+        text,
+        border: 'bottom',
+        width: 600,
+        time: 5000
+      })
+    },
+    downloadPDF (id) {
+      // console.log(id)
+      this.$router.push({ name: 'test-id', params: { id } })
     }
   }
 }
