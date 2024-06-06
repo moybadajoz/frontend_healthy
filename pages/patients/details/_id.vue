@@ -254,7 +254,7 @@
                   <td class="text-center">
                     <v-btn
                       icon
-                      @click="downloadPDF(item.apptId)"
+                      @click="null"
                     >
                       <v-icon>
                         mdi-download

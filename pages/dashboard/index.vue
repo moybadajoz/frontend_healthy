@@ -150,9 +150,9 @@
               <v-card-text class="mt-n2">
                 <v-row justify="space-between">
                   <v-col cols="auto">
-                    <h2 class="mb-1">
+                    <h3 class="mb-1">
                       Fenofibrate (48mg)
-                    </h2>
+                    </h3>
                     Take with food every morning
                     <br>
                     <span style="color: blue;">Last refil 21/01/2023</span>
@@ -178,12 +178,10 @@
               <v-card-text class="mt-n2">
                 <v-row justify="space-between">
                   <v-col cols="auto">
-                    <h2 class="mb-1">
+                    <h3 class="mb-1">
                       Alfuzosin (10mg)
-                    </h2>
+                    </h3>
                     Take 1 with food twice a day and avoid
-                    <br>
-                    Drinking alcohol for 2 hours after
                     <br>
                     <span style="color: blue;">Last refil 27/01/2023</span>
                   </v-col>
@@ -208,9 +206,9 @@
               <v-card-text class="mt-n2">
                 <v-row justify="space-between">
                   <v-col cols="auto">
-                    <h2 class="mb-1">
+                    <h3 class="mb-1">
                       Dexamethasone (4mg)
-                    </h2>
+                    </h3>
                     Take 3 tablets 3 times a day for 7 days
                     <br>
                     <span style="color: blue;">Last refil 24/01/2023</span>
@@ -231,7 +229,7 @@
           <h4>Current Condition Of Patients</h4>
           <v-card
             color="#FFDEC8"
-            height="35vh"
+            height="36vh"
           >
             <v-card-title>
               <div
@@ -303,7 +301,7 @@
           <h4>Recents Bills</h4>
           <v-card
             color="#FFDEC8"
-            height="35vh"
+            height="36vh"
           >
             <v-card-text>
               <v-row>
@@ -316,18 +314,18 @@
                   </h1>
                 </v-col>
                 <v-col>
-                  <h3 class="mb-2">
+                  <h4 class="mb-1">
                     Medicare
-                  </h3>
-                  <h1 class="mb-2">
+                  </h4>
+                  <h3 class="mb-1">
                     $125.00
-                  </h1>
-                  <h3 class="mb-2">
-                    Total
                   </h3>
-                  <h1 class="mb-2">
+                  <h4 class="mb-1">
+                    Total
+                  </h4>
+                  <h3 class="mb-1">
                     $234.00
-                  </h1>
+                  </h3>
                 </v-col>
               </v-row>
               <v-row>
@@ -346,7 +344,6 @@
               <v-btn
                 outlined
                 rounded
-                height="70px"
                 style="display: flex;"
                 class="ctm-btn"
               >
