@@ -53,7 +53,13 @@
         </div>
       </template>
     </v-navigation-drawer>
-
+    <AlertMessage
+      v-if="showAlert"
+      :type="type"
+      :color="color"
+      :border="border"
+      :alert-text="text"
+    />
     <v-main style="background-color: #FFF4EC;">
       <v-container
         class="py-8 px-6"
@@ -71,6 +77,7 @@ export default {
   data: () => ({
     drawer: null,
     selectedItem: 1,
+    showAlert: false,
     links: [
       ['mdi-view-dashboard-outline', 'Dashboard', '/dashboard'],
       ['mdi-calendar-month', 'Schedule', '/schedule'],
@@ -81,6 +88,22 @@ export default {
   computed: {
     ...mapState(['user']),
     ...mapGetters(['getUser'])
+  },
+  created () {
+    this.$nuxt.$on('show-alert', $event => this.cambiaDatos($event))
+  },
+  methods: {
+    cambiaDatos (datos) {
+      this.color = datos.color
+      this.type = datos.type
+      this.text = datos.text
+      this.border = datos.border
+      this.width = datos.width
+      this.showAlert = true
+      setTimeout(() => {
+        this.showAlert = false
+      }, datos.time)
+    }
   }
 }
 </script>

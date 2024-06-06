@@ -31,10 +31,20 @@
             v-model="password"
             style="margin-left: 20%; margin-right: 20%;"
             rounded
+            type="password"
             outlined
             dense
           />
         </v-row>
+        <v-alert
+          v-if="showAlert"
+          type="error"
+          outlined
+          border="bottom"
+          style="margin-left: 25%; width: 50%;"
+        >
+          Invalid credentials
+        </v-alert>
       </v-card-text>
       <v-card-actions class="mb-5">
         <v-col cols="12">
@@ -168,7 +178,8 @@ export default {
       apaterno: null,
       amaterno: null,
       direccion: null,
-      telefono: null
+      telefono: null,
+      showAlert: false
     }
   },
   methods: {
@@ -184,11 +195,17 @@ export default {
         data: sendData
       }).then(async (res) => {
         const result = await res.data
+        console.log(res.data)
         if (result.message === 'success') {
           console.log('@@@@@ result => ', result)
           this.$store.commit('setToken', result.token)
           this.$store.commit('setUser', result.user)
           this.$router.push('/dashboard')
+        } else {
+          this.showAlert = true
+          setTimeout(() => {
+            this.showAlert = false
+          }, 5000)
         }
       }).catch((err) => {
         console.log('@@@ error => ', err)
@@ -211,18 +228,18 @@ export default {
           if (res.data.message === 'User registered successfully') {
             this.showDialog = false
             this.obtenerUsuarios()
+            this.email = null
+            this.password = null
+            this.nombre = null
+            this.apaterno = null
+            this.amaterno = null
+            this.direccion = null
+            this.telefono = null
           }
         })
         .catch((error) => {
           console.log('@@ error => ', error)
         })
-      this.email = null
-      this.password = null
-      this.nombre = null
-      this.apaterno = null
-      this.amaterno = null
-      this.direccion = null
-      this.telefono = null
     }
   }
 }
