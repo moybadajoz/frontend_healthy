@@ -377,21 +377,6 @@ export default {
         ['Payments']
       ],
       optionSelect: 0,
-      desserts: [
-        { id: 0, date: '01/01/2023 12:30', treatment: 'MRI', payment: '852.00', comments: 'Excess Amount Glucose' },
-        { id: 1, date: '07/01/2023 1:30', treatment: 'CGD', payment: '352.00', comments: 'Control Blood Pressure' },
-        { id: 2, date: '15/01/2023 13:30', treatment: 'VJB', payment: '120.00', comments: 'Fever' },
-        { id: 3, date: '17/01/2023 15:30', treatment: 'TISSUE', payment: '5520.00', comments: 'Good Condition' },
-        { id: 4, date: '21/01/2023 20:30', treatment: 'BONE', payment: '552.00', comments: 'Good Condition' },
-        { id: 5, date: '27/01/2023 23:30', treatment: 'FULL BODY', payment: '365.00', comments: 'Good Condition' }
-      ],
-      paid: [
-        { text: 'Total Amount', value: '$7761' },
-        { text: 'Amount Paid', value: '$5761' },
-        { text: 'Discount Amount', value: '$200' },
-        { text: 'Deposit', value: '$1800' },
-        { text: 'Balances', value: '$0' }
-      ],
       appointments: []
     }
   },
